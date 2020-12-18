@@ -2,44 +2,54 @@
 
 /**
  * ### Challenge `processFirstItem`
- * 
+ *
  * @instructions
  * Implement a higher-order function called `processFirstItem`.
  * It takes two arguments:
  * @param stringList an array of strings.
  * @param callback function that takes a string as its argument.
  * @returns the result of invoking `callback` with the FIRST element in `stringList`.
- * 
+ *
  * Example of usage of this higher-order function:
  * Invoking `processFirstItem` passing `['foo', 'bar']` and `(str) => str + str`,
  * should return 'foofoo'.
-*/
+ */
 function processFirstItem(stringList, callback) {
-  return callback(stringList[0])
+  return callback(stringList[0]);
 }
 
 // ⭐️ Example Challenge END ⭐️
-
 
 ///// M V P ///////
 
 /* Task 1: `counterMaker`
  * Study the code for counter1 and counter2. Answer the questions below.
- * 
- * 1. What is the difference between counter1 and counter2?
- * 
- * 2. Which of the two uses a closure? How can you tell?
- * 
- * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
  *
-*/
+ * 1. What is the difference between counter1 and counter2?
+ *
+ * - Count 1 has it's value set equal to function countMaker with the variable of count nested inside of countMaker
+ * - Count 2 has the variable of count set outside of the function in the global scope
+ *
+ *
+ * 2. Which of the two uses a closure? How can you tell?
+ *
+ * Counter2 is a closure becuase it reaches outside of it's local scope to access information.
+ *
+ *
+ * Counter1 is a closure because as a function it has nested methods(functions).
+ *
+ *
+ *
+ * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better?
+ *
+ * Counter1 would be better if you wanted the information to be available to work on only locally and counter2 would be better if a global variable is appropriate to access and change
+ *
+ */
 
 // counter1 code
 function counterMaker() {
   let count = 0;
-  return function counter() {
-    count++;
-  }
+  count++;
 }
 
 const counter1 = counterMaker();
@@ -51,16 +61,16 @@ function counter2() {
   return count++;
 }
 
-
 /* Task 2: inning() 
 
 Write a function called `inning` that generates a random number of points that a team scored in an inning. This should be a whole number between 0 and 2. */
 
-function inning(/*Code Here*/){
+// let points = Math.floor(Math.random() * 3);
 
-    /*Code Here*/
-
+function inning() {
+  return Math.floor(Math.random() * 3);
 }
+console.log(inning());
 
 /* Task 3: finalScore()
 
@@ -74,13 +84,20 @@ finalScore(inning, 9) might return:
   "Away": 5,
 }
 
-*/ 
+*/
 
-function finalScore(/*code Here*/){
-
-  /*Code Here*/
-
+function finalScore(cb, numOfInnings) {
+  let team1 = 0;
+  let team2 = 0;
+  for (let i = 0; i < numOfInnings; i++) {
+    team1 = team1 + cb();
+    team2 = team2 + cb();
+  }
+  let finalScore = { Home: team1, Away: team2 };
+  return finalScore;
 }
+
+console.log(finalScore(inning, 9));
 
 /* Task 4: 
 
@@ -104,8 +121,12 @@ and returns the score at each pont in the game, like so:
 
 Final Score: awayTeam - homeTeam */
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function scoreboard(cb, cb2, numOfInnings) {
+  let newArray = [];
+  for (let i = 0; i < numOfInnings; i++) {
+    newArray.push(cb2(cb, numOfInnings));
+  }
+  return newArray;
 }
 
-
+console.log(scoreboard(inning, finalScore, 9));
